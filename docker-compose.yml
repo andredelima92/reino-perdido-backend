@@ -8,7 +8,7 @@ services:
       dockerfile: Dockerfile
     image: reino-perdido-backend #Seeting the image name to reuse in scheduler and queue
     ports:
-      - "3060:3000"
+      - "3001:3000"
       - "7001:7001"
     volumes:
       - .:/usr/src/app
