@@ -1,4 +1,4 @@
-FROM node:19-alpine
+FROM node:18-alpine
 
 ENV TZ="America/Sao_Paulo"
 ENV NODE_ENV="development"

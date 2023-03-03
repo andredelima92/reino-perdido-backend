@@ -1,0 +1,30 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.1.x", "debian-openssl-1.1.x", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id     String       @id @default(uuid())
+  name   String
+  status UserStatus[]
+
+  @@map("users")
+}
+
+model UserStatus {
+  userId  String  @unique
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  hp      Decimal @default(25) @db.Decimal(6, 2)
+  attack  Int     @default(1)
+  defense Int     @default(1)
+
+  @@map("usersStatus")
+}
