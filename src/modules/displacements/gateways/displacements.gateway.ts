@@ -1,9 +1,11 @@
 import { Logger, NotFoundException } from '@nestjs/common';
 import {
+  ConnectedSocket,
   MessageBody,
   SubscribeMessage,
   WebSocketGateway,
 } from '@nestjs/websockets';
+import { Socket } from 'dgram';
 import { MapsDTO, MapsService } from '../services/maps.service';
 
 @WebSocketGateway({ cors: true })
@@ -21,8 +23,16 @@ export class DisplacementsGateway {
   }
 
   @SubscribeMessage('move')
-  handleMove(@MessageBody() direction: number): any {
-    const map = this.mapsService.getMapByPosition(direction);
-    return map;
+  handleMove(
+    @MessageBody() direction: number,
+    @ConnectedSocket() client: Socket,
+  ): any {
+    try {
+      const map = this.mapsService.getMapByPosition(direction);
+
+      return map;
+    } catch (err) {
+      client.emit('socketError', err.message);
+    }
   }
 }

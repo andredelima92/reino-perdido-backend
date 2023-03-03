@@ -22,6 +22,7 @@ export class MapsService {
     const map = maps.find((map) => map.position === position);
 
     if (!map) throw new NotFoundException('Mapa não encontrado');
+
     return map;
   }
 }
